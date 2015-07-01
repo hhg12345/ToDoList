@@ -33,23 +33,23 @@
     _items = [[NSMutableArray alloc]initWithCapacity:20];
     ChecklistsItem *item;
     item = [ChecklistsItem new];
-    item.text = @"000";
+    item.text = @"00000";
     item.checked = NO;
     [_items addObject:item];
     item = [ChecklistsItem new];
-    item.text = @"111";
+    item.text = @"11111";
     item.checked = NO;
     [_items addObject:item];
     item = [ChecklistsItem new];
-    item.text = @"222";
+    item.text = @"22222";
     item.checked = NO;
     [_items addObject:item];
     item = [ChecklistsItem new];
-    item.text = @"333";
+    item.text = @"33333";
     item.checked = NO;
     [_items addObject:item];
     item = [ChecklistsItem new];
-    item.text = @"444";
+    item.text = @"44444";
     item.checked = NO;
     [_items addObject:item];
 	// Do any additional setup after loading the view, typically from a nib.
