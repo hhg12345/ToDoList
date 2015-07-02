@@ -23,6 +23,11 @@
 {
     [super viewDidLoad];
     
+    if (self.itemToEdit!=nil) {
+        self.title = @"Edit Item";
+        self.textField.text = self.itemToEdit.text;
+        self.doneBarButton.enabled = YES;
+    }
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -43,12 +48,16 @@
 }
 
 - (IBAction)done:(id)sender {
-//    NSLog(@"当前文本框中的内容为%@",self.textField.text);
-    ChecklistsItem *item= [[ChecklistsItem alloc]init];
-    item.text = self.textField.text;
-    item.checked = NO;
-    [self.delegate addItemViewController:self didFinishAddingItem:item];
-//    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    
+    if (self.itemToEdit == nil) {
+        ChecklistsItem *item = [[ChecklistsItem alloc]init];
+        item.text = self.textField.text;
+        item.checked = NO;
+        [self.delegate addItemViewController:self didFinishAddingItem:item];
+    }else{
+        self.itemToEdit.text = self.textField.text;
+        [self.delegate addItemViewcontroller:self didFinishEditingItem:self.itemToEdit];
+    }
 }
 - (NSIndexPath*)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     return nil;

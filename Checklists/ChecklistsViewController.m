@@ -15,18 +15,23 @@
 @implementation ChecklistsViewController{
     NSMutableArray *_items;
 }
+
 - (void)configureCheckmarkForCell:(UITableViewCell *)cell withChecklistItem:(ChecklistsItem *)item{
 
+    UILabel *label = (UILabel *)[cell viewWithTag:1001];
+    
     if (item.checked == YES) {
-        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        label.text = @"√";
     }else{
-        cell.accessoryType = UITableViewCellAccessoryNone;
+        label.text = @"";
     }
 }
+
 - (void)configureTextForCell:(UITableViewCell*)cell withChecklistItem:(ChecklistsItem *)item{
     UILabel *label = (UILabel*)[cell viewWithTag:1000];
     label.text = item.text;
 }
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -60,9 +65,11 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return [_items count];
 }
+
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"ChecklistItem"];
     ChecklistsItem *item = _items[indexPath.row];
@@ -70,6 +77,7 @@
     [self configureCheckmarkForCell:cell withChecklistItem:item];
     return cell;
 }
+
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     ChecklistsItem *item = _items[indexPath.row];
@@ -77,6 +85,7 @@
     [self configureCheckmarkForCell:cell withChecklistItem:item];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
+
 - (IBAction)addItem:(id)sender {
     NSInteger newRowIndex = [_items count];
     ChecklistsItem *item = [[ChecklistsItem alloc]init];
@@ -87,14 +96,17 @@
     NSArray *indexpaths = @[indexpath];
     [self.tableView insertRowsAtIndexPaths:indexpaths withRowAnimation:UITableViewRowAnimationAutomatic];
 }
+
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
     [_items removeObjectAtIndex:indexPath.row];
     NSArray *indexPaths = @[indexPath];
     [tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
 }
+
 - (void)addItemViewControllerDidCancel:(AddItemViewController *)controller{
     [self dismissViewControllerAnimated:YES completion:nil];
 }
+
 - (void)addItemViewController:(AddItemViewController*)controller didFinishAddingItem:(ChecklistsItem*)item{
     NSInteger newRowIndex = [_items count];
     [_items addObject:item];
@@ -103,11 +115,26 @@
     [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
+
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     if([segue.identifier isEqualToString:@"AddItem"]){
         UINavigationController *navigationController = segue.destinationViewController;
         AddItemViewController* controller = (AddItemViewController*)navigationController.topViewController;
         controller.delegate = self;
+    }else if ([segue.identifier isEqualToString: @"EditItem"]){
+        UINavigationController *navigationController = segue.destinationViewController;
+        AddItemViewController *controller = (AddItemViewController *)navigationController.topViewController;
+        controller.delegate = self;
+        NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
+        controller.itemToEdit = _items[indexPath.row];
     }
+}
+
+- (void)addItemViewcontroller:(AddItemViewController *)controller didFinishEditingItem:(ChecklistsItem *)item{
+    NSInteger index = [_items indexOfObject:item];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    [self configureTextForCell:cell withChecklistItem:item];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 @end
