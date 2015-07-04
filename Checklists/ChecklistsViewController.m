@@ -32,38 +32,59 @@
     label.text = item.text;
 }
 
+-(void)loadChecklistItems{
+    NSString *path = [self dataFilePath];
+    if ([[NSFileManager defaultManager]fileExistsAtPath:path]) {
+        NSData *data = [[NSData alloc]initWithContentsOfFile:path];
+        NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc]initForReadingWithData:data];
+        _items = [unarchiver decodeObjectForKey:@"ChecklistItems"];
+        [unarchiver finishDecoding];
+    }else{
+        _items = [[NSMutableArray alloc]initWithCapacity:20];
+    }
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder{
+    if ((self = [super initWithCoder:aDecoder])) {
+        [self loadChecklistItems];
+    }
+    return self;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    _items = [[NSMutableArray alloc]initWithCapacity:20];
-    ChecklistItem *item;
-    item = [ChecklistItem new];
-    item.text = @"00000";
-    item.checked = NO;
-    [_items addObject:item];
-    item = [ChecklistItem new];
-    item.text = @"11111";
-    item.checked = NO;
-    [_items addObject:item];
-    item = [ChecklistItem new];
-    item.text = @"22222";
-    item.checked = NO;
-    [_items addObject:item];
-    item = [ChecklistItem new];
-    item.text = @"33333";
-    item.checked = NO;
-    [_items addObject:item];
-    item = [ChecklistItem new];
-    item.text = @"44444";
-    item.checked = NO;
-    [_items addObject:item];
+    
+    NSLog(@"文件夹的目录：%@",[self documentsDirectory]);
+    NSLog(@"数据文件的最终路径：%@",[self dataFilePath]);
 	// Do any additional setup after loading the view, typically from a nib.
 }
 
+//获取Documents文件夹完整路径（可重用）
+- (NSString *)documentsDirectory{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths firstObject];
+    
+    return documentsDirectory;
+}
+
+//拼出存储文件位置
+- (NSString *)dataFilePath{
+    return [[self documentsDirectory]stringByAppendingPathComponent:@"Checklists.plist"];
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+//往.plist文件写入_items
+- (void)saveChecklistItems{
+    NSMutableData *data = [[NSMutableData alloc]init];
+    NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc]initForWritingWithMutableData:data];
+    [archiver encodeObject:_items forKey:@"ChecklistItems"];
+    [archiver finishEncoding];
+    [data writeToFile:[self dataFilePath] atomically:YES];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -99,6 +120,7 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
     [_items removeObjectAtIndex:indexPath.row];
+    [self saveChecklistItems];
     NSArray *indexPaths = @[indexPath];
     [tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
 }
@@ -107,15 +129,30 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+//delegate方法，Add进入，Done按钮触发
 - (void)itemDetailViewController:(ItemDetailViewController*)controller didFinishAddingItem:(ChecklistItem*)item{
     NSInteger newRowIndex = [_items count];
     [_items addObject:item];
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:newRowIndex inSection:0];
     NSArray *indexPaths = @[indexPath];
     [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+    //写入文件
+    [self saveChecklistItems];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+//delegate方法，Edit进入，Done按钮触发
+- (void)itemDetailViewController:(ItemDetailViewController *)controller didFinishEditingItem:(ChecklistItem *)item{
+    NSInteger index = [_items indexOfObject:item];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    [self configureTextForCell:cell withChecklistItem:item];
+    //写入文件
+    [self saveChecklistItems];
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+// ???
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     if([segue.identifier isEqualToString:@"AddItem"]){
         UINavigationController *navigationController = segue.destinationViewController;
@@ -130,11 +167,4 @@
     }
 }
 
-- (void)itemDetailViewController:(ItemDetailViewController *)controller didFinishEditingItem:(ChecklistItem *)item{
-    NSInteger index = [_items indexOfObject:item];
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
-    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
-    [self configureTextForCell:cell withChecklistItem:item];
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
 @end
