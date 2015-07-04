@@ -1,13 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Jb3-Yu-Q8S">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13A603" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Jb3-Yu-Q8S">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <scenes>
-        <!--Checklists View Controller - Checklists-->
+        <!--All Lists View Controller - Checklists-->
+        <scene sceneID="B2B-9d-PX2">
+            <objects>
+                <tableViewController id="BRK-Ox-bY2" customClass="AllListsViewController" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" title="Checklists" id="8V7-J7-0sc"/>
+                    <connections>
+                        <segue destination="lqT-iy-b6J" kind="push" identifier="ShowChecklist" id="Bq4-De-ki2"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ntf-nW-BLD" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="127" y="-224"/>
+        </scene>
+        <!--Checklist View Controller - Checklists-->
         <scene sceneID="m9S-mW-dR3">
             <objects>
-                <tableViewController id="lqT-iy-b6J" customClass="ChecklistsViewController" sceneMemberID="viewController">
+                <tableViewController id="lqT-iy-b6J" customClass="ChecklistViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="wL6-o3-a1W">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -55,7 +68,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7Db-El-NDh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="502" y="-224"/>
+            <point key="canvasLocation" x="553" y="-224"/>
         </scene>
         <!--Item Detail View Controller - Add Item-->
         <scene sceneID="uIf-1N-zBo">
@@ -128,12 +141,12 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="lqT-iy-b6J" kind="relationship" relationship="rootViewController" id="bdr-qc-9dI"/>
+                        <segue destination="BRK-Ox-bY2" kind="relationship" relationship="rootViewController" id="7Hm-6I-acW"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uTQ-VM-9Ds" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="97" y="-224"/>
+            <point key="canvasLocation" x="-309" y="-270"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="OAT-YL-cm8">

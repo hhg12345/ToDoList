@@ -14,7 +14,7 @@
 		8325535D1B3F899B006EA1F9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8325535C1B3F899B006EA1F9 /* main.m */; };
 		832553611B3F899B006EA1F9 /* ChecklistsAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 832553601B3F899B006EA1F9 /* ChecklistsAppDelegate.m */; };
 		832553641B3F899B006EA1F9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 832553621B3F899B006EA1F9 /* Main.storyboard */; };
-		832553671B3F899B006EA1F9 /* ChecklistsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 832553661B3F899B006EA1F9 /* ChecklistsViewController.m */; };
+		832553671B3F899B006EA1F9 /* ChecklistViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 832553661B3F899B006EA1F9 /* ChecklistViewController.m */; };
 		832553691B3F899B006EA1F9 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 832553681B3F899B006EA1F9 /* Images.xcassets */; };
 		832553701B3F899B006EA1F9 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8325536F1B3F899B006EA1F9 /* XCTest.framework */; };
 		832553711B3F899B006EA1F9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 832553501B3F899B006EA1F9 /* Foundation.framework */; };
@@ -23,6 +23,7 @@
 		8325537C1B3F899B006EA1F9 /* ChecklistsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8325537B1B3F899B006EA1F9 /* ChecklistsTests.m */; };
 		832553871B3FA92E006EA1F9 /* ChecklistItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 832553861B3FA92E006EA1F9 /* ChecklistItem.m */; };
 		8325538D1B3FE5B3006EA1F9 /* ItemDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8325538C1B3FE5B3006EA1F9 /* ItemDetailViewController.m */; };
+		832AF0ED1B47CAE800BC0098 /* AllListsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 832AF0EC1B47CAE800BC0098 /* AllListsViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,8 +48,8 @@
 		8325535F1B3F899B006EA1F9 /* ChecklistsAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChecklistsAppDelegate.h; sourceTree = "<group>"; };
 		832553601B3F899B006EA1F9 /* ChecklistsAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChecklistsAppDelegate.m; sourceTree = "<group>"; };
 		832553631B3F899B006EA1F9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		832553651B3F899B006EA1F9 /* ChecklistsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChecklistsViewController.h; sourceTree = "<group>"; };
-		832553661B3F899B006EA1F9 /* ChecklistsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChecklistsViewController.m; sourceTree = "<group>"; };
+		832553651B3F899B006EA1F9 /* ChecklistViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChecklistViewController.h; sourceTree = "<group>"; };
+		832553661B3F899B006EA1F9 /* ChecklistViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChecklistViewController.m; sourceTree = "<group>"; };
 		832553681B3F899B006EA1F9 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		8325536E1B3F899B006EA1F9 /* ChecklistsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ChecklistsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8325536F1B3F899B006EA1F9 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -59,6 +60,8 @@
 		832553861B3FA92E006EA1F9 /* ChecklistItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChecklistItem.m; sourceTree = "<group>"; };
 		8325538B1B3FE5B3006EA1F9 /* ItemDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemDetailViewController.h; sourceTree = "<group>"; };
 		8325538C1B3FE5B3006EA1F9 /* ItemDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemDetailViewController.m; sourceTree = "<group>"; };
+		832AF0EB1B47CAE800BC0098 /* AllListsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AllListsViewController.h; sourceTree = "<group>"; };
+		832AF0EC1B47CAE800BC0098 /* AllListsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllListsViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,14 +124,16 @@
 				8325535F1B3F899B006EA1F9 /* ChecklistsAppDelegate.h */,
 				832553601B3F899B006EA1F9 /* ChecklistsAppDelegate.m */,
 				832553621B3F899B006EA1F9 /* Main.storyboard */,
-				832553651B3F899B006EA1F9 /* ChecklistsViewController.h */,
-				832553661B3F899B006EA1F9 /* ChecklistsViewController.m */,
+				832553651B3F899B006EA1F9 /* ChecklistViewController.h */,
+				832553661B3F899B006EA1F9 /* ChecklistViewController.m */,
 				832553681B3F899B006EA1F9 /* Images.xcassets */,
 				832553571B3F899B006EA1F9 /* Supporting Files */,
 				832553851B3FA92E006EA1F9 /* ChecklistItem.h */,
 				832553861B3FA92E006EA1F9 /* ChecklistItem.m */,
 				8325538B1B3FE5B3006EA1F9 /* ItemDetailViewController.h */,
 				8325538C1B3FE5B3006EA1F9 /* ItemDetailViewController.m */,
+				832AF0EB1B47CAE800BC0098 /* AllListsViewController.h */,
+				832AF0EC1B47CAE800BC0098 /* AllListsViewController.m */,
 			);
 			path = Checklists;
 			sourceTree = "<group>";
@@ -262,7 +267,8 @@
 			files = (
 				8325535D1B3F899B006EA1F9 /* main.m in Sources */,
 				832553611B3F899B006EA1F9 /* ChecklistsAppDelegate.m in Sources */,
-				832553671B3F899B006EA1F9 /* ChecklistsViewController.m in Sources */,
+				832AF0ED1B47CAE800BC0098 /* AllListsViewController.m in Sources */,
+				832553671B3F899B006EA1F9 /* ChecklistViewController.m in Sources */,
 				8325538D1B3FE5B3006EA1F9 /* ItemDetailViewController.m in Sources */,
 				832553871B3FA92E006EA1F9 /* ChecklistItem.m in Sources */,
 			);
