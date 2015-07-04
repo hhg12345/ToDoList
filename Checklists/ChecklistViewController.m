@@ -6,13 +6,13 @@
 //  Copyright (c) 2015年 ioslearning. All rights reserved.
 //
 
-#import "ChecklistsViewController.h"
+#import "ChecklistViewController.h"
 #import "ChecklistItem.h"
-@interface ChecklistsViewController ()
+@interface ChecklistViewController ()
 
 @end
 
-@implementation ChecklistsViewController{
+@implementation ChecklistViewController{
     NSMutableArray *_items;
 }
 
