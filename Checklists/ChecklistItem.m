@@ -6,9 +6,9 @@
 //  Copyright (c) 2015年 ioslearning. All rights reserved.
 //
 
-#import "ChecklistsItem.h"
+#import "ChecklistItem.h"
 
-@implementation ChecklistsItem
+@implementation ChecklistItem
 -(void)toggleChecked{
     self.checked = !self.checked;
 }

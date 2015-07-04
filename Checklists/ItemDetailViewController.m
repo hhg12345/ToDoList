@@ -1,14 +1,14 @@
 //
-//  AddItemViewController.m
+//  itemDetailViewController.m
 //  Checklists
 //
 //  Created by 韩豪国 on 15-6-28.
 //  Copyright (c) 2015年 ioslearning. All rights reserved.
 //
 
-#import "AddItemViewController.h"
-#import "ChecklistsItem.h"
-@implementation AddItemViewController
+#import "ItemDetailViewController.h"
+#import "ChecklistItem.h"
+@implementation ItemDetailViewController
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -43,20 +43,20 @@
 
 
 - (IBAction)cancel:(id)sender {
-    [self.delegate addItemViewControllerDidCancel:self];
+    [self.delegate itemDetailViewControllerDidCancel:self];
 //    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (IBAction)done:(id)sender {
     
     if (self.itemToEdit == nil) {
-        ChecklistsItem *item = [[ChecklistsItem alloc]init];
+        ChecklistItem *item = [[ChecklistItem alloc]init];
         item.text = self.textField.text;
         item.checked = NO;
-        [self.delegate addItemViewController:self didFinishAddingItem:item];
+        [self.delegate itemDetailViewController:self didFinishAddingItem:item];
     }else{
         self.itemToEdit.text = self.textField.text;
-        [self.delegate addItemViewcontroller:self didFinishEditingItem:self.itemToEdit];
+        [self.delegate itemDetailViewController:self didFinishEditingItem:self.itemToEdit];
     }
 }
 - (NSIndexPath*)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath{

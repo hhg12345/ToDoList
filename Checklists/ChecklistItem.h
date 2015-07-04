@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface ChecklistsItem : NSObject
+@interface ChecklistItem : NSObject
 -(void) toggleChecked;
 @property(nonatomic,copy)NSString *text;
 @property(nonatomic,assign)BOOL checked;

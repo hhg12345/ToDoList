@@ -7,7 +7,7 @@
 //
 
 #import "ChecklistsViewController.h"
-#import "ChecklistsItem.h"
+#import "ChecklistItem.h"
 @interface ChecklistsViewController ()
 
 @end
@@ -16,7 +16,7 @@
     NSMutableArray *_items;
 }
 
-- (void)configureCheckmarkForCell:(UITableViewCell *)cell withChecklistItem:(ChecklistsItem *)item{
+- (void)configureCheckmarkForCell:(UITableViewCell *)cell withChecklistItem:(ChecklistItem *)item{
 
     UILabel *label = (UILabel *)[cell viewWithTag:1001];
     
@@ -27,7 +27,7 @@
     }
 }
 
-- (void)configureTextForCell:(UITableViewCell*)cell withChecklistItem:(ChecklistsItem *)item{
+- (void)configureTextForCell:(UITableViewCell*)cell withChecklistItem:(ChecklistItem *)item{
     UILabel *label = (UILabel*)[cell viewWithTag:1000];
     label.text = item.text;
 }
@@ -36,24 +36,24 @@
 {
     [super viewDidLoad];
     _items = [[NSMutableArray alloc]initWithCapacity:20];
-    ChecklistsItem *item;
-    item = [ChecklistsItem new];
+    ChecklistItem *item;
+    item = [ChecklistItem new];
     item.text = @"00000";
     item.checked = NO;
     [_items addObject:item];
-    item = [ChecklistsItem new];
+    item = [ChecklistItem new];
     item.text = @"11111";
     item.checked = NO;
     [_items addObject:item];
-    item = [ChecklistsItem new];
+    item = [ChecklistItem new];
     item.text = @"22222";
     item.checked = NO;
     [_items addObject:item];
-    item = [ChecklistsItem new];
+    item = [ChecklistItem new];
     item.text = @"33333";
     item.checked = NO;
     [_items addObject:item];
-    item = [ChecklistsItem new];
+    item = [ChecklistItem new];
     item.text = @"44444";
     item.checked = NO;
     [_items addObject:item];
@@ -72,7 +72,7 @@
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"ChecklistItem"];
-    ChecklistsItem *item = _items[indexPath.row];
+    ChecklistItem *item = _items[indexPath.row];
     [self configureTextForCell:cell withChecklistItem:item];
     [self configureCheckmarkForCell:cell withChecklistItem:item];
     return cell;
@@ -80,7 +80,7 @@
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    ChecklistsItem *item = _items[indexPath.row];
+    ChecklistItem *item = _items[indexPath.row];
     [item toggleChecked];
     [self configureCheckmarkForCell:cell withChecklistItem:item];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -88,7 +88,7 @@
 
 - (IBAction)addItem:(id)sender {
     NSInteger newRowIndex = [_items count];
-    ChecklistsItem *item = [[ChecklistsItem alloc]init];
+    ChecklistItem *item = [[ChecklistItem alloc]init];
     item.text = @"This is a new item";
     item.checked = NO;
     [_items addObject:item];
@@ -103,11 +103,11 @@
     [tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
-- (void)addItemViewControllerDidCancel:(AddItemViewController *)controller{
+- (void)itemDetailViewControllerDidCancel:(ItemDetailViewController *)controller{
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)addItemViewController:(AddItemViewController*)controller didFinishAddingItem:(ChecklistsItem*)item{
+- (void)itemDetailViewController:(ItemDetailViewController*)controller didFinishAddingItem:(ChecklistItem*)item{
     NSInteger newRowIndex = [_items count];
     [_items addObject:item];
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:newRowIndex inSection:0];
@@ -119,18 +119,18 @@
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     if([segue.identifier isEqualToString:@"AddItem"]){
         UINavigationController *navigationController = segue.destinationViewController;
-        AddItemViewController* controller = (AddItemViewController*)navigationController.topViewController;
+        ItemDetailViewController* controller = (ItemDetailViewController*)navigationController.topViewController;
         controller.delegate = self;
     }else if ([segue.identifier isEqualToString: @"EditItem"]){
         UINavigationController *navigationController = segue.destinationViewController;
-        AddItemViewController *controller = (AddItemViewController *)navigationController.topViewController;
+        ItemDetailViewController *controller = (ItemDetailViewController *)navigationController.topViewController;
         controller.delegate = self;
         NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
         controller.itemToEdit = _items[indexPath.row];
     }
 }
 
-- (void)addItemViewcontroller:(AddItemViewController *)controller didFinishEditingItem:(ChecklistsItem *)item{
+- (void)itemDetailViewController:(ItemDetailViewController *)controller didFinishEditingItem:(ChecklistItem *)item{
     NSInteger index = [_items indexOfObject:item];
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
