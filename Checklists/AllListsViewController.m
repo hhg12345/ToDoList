@@ -9,6 +9,7 @@
 #import "AllListsViewController.h"
 #import "Checklist.h"
 #import "ChecklistViewController.h"
+#import "ChecklistItem.h"
 
 @interface AllListsViewController ()
 
@@ -18,25 +19,61 @@
     NSMutableArray *_lists;
 }
 
+-(NSString*)documentsDirectory{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths firstObject];
+    return documentsDirectory;
+}
+
+-(NSString*)dataFilePath{
+    return [[self documentsDirectory]stringByAppendingPathComponent:@"Checklists.plist"];
+}
+
+-(void)saveChecklists{
+    NSMutableData *data = [[NSMutableData alloc]init];
+    NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc]initForWritingWithMutableData:data];
+    [archiver encodeObject:_lists forKey:@"Checklists"];
+    [archiver finishEncoding];
+    [data writeToFile:[self dataFilePath] atomically:YES];
+}
+
+-(void)loadChecklists{
+    NSString *path = [self dataFilePath];
+    if([[NSFileManager defaultManager]fileExistsAtPath:path]){
+        NSData *data = [[NSData alloc]initWithContentsOfFile:path];
+        NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc]initForReadingWithData:data];
+        _lists = [unarchiver decodeObjectForKey:@"Checklists"];
+        [unarchiver finishDecoding];
+    }else{
+        _lists = [[NSMutableArray alloc]initWithCapacity:20];
+    }
+}
+
 - (id)initWithCoder:(NSCoder *)aDecoder{
     if ((self = [super initWithCoder:aDecoder])) {
-        _lists = [[NSMutableArray alloc]initWithCapacity:20];
-        Checklist *list;
-        list = [[Checklist alloc]init];
-        list.name = @"娱乐";
-        [_lists addObject:list];
-        
-        list = [[Checklist alloc]init];
-        list.name = @"工作";
-        [_lists addObject:list];
-        
-        list = [[Checklist alloc]init];
-        list.name = @"学习";
-        [_lists addObject:list];
-        
-        list = [[Checklist alloc]init];
-        list.name = @"家庭";
-        [_lists addObject:list];
+//        _lists = [[NSMutableArray alloc]initWithCapacity:20];
+//        Checklist *list;
+//        list = [[Checklist alloc]init];
+//        list.name = @"娱乐";
+//        [_lists addObject:list];
+//        
+//        list = [[Checklist alloc]init];
+//        list.name = @"工作";
+//        [_lists addObject:list];
+//        
+//        list = [[Checklist alloc]init];
+//        list.name = @"学习";
+//        [_lists addObject:list];
+//        
+//        list = [[Checklist alloc]init];
+//        list.name = @"家庭";
+//        [_lists addObject:list];
+//        
+//        for (Checklist *list in _lists) {
+//            ChecklistItem *item = [[ChecklistItem alloc]init];
+//            item.text = [NSString stringWithFormat:@"Item for:%@",list.name];
+//        }
+        [self loadChecklists];
     }
     return self;
 }
@@ -60,9 +97,8 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    // Return the number of rows in the section.
-    
-    return [_lists count];
+
+   return [_lists count];
 }
 
 
@@ -71,14 +107,12 @@
     static NSString *CellIdentifier = @"Cell";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
-    // Configure the cell...
     if (cell == nil) {
-        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     Checklist *checklist = _lists[indexPath.row];
     cell.textLabel.text = checklist.name;
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
     return cell;
 }
 
