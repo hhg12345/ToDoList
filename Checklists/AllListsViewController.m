@@ -10,73 +10,72 @@
 #import "Checklist.h"
 #import "ChecklistViewController.h"
 #import "ChecklistItem.h"
+#import "DataModel.h"
 
 @interface AllListsViewController ()
 
 @end
 
-@implementation AllListsViewController{
-    NSMutableArray *_lists;
-}
+@implementation AllListsViewController
 
--(NSString*)documentsDirectory{
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths firstObject];
-    return documentsDirectory;
-}
-
--(NSString*)dataFilePath{
-    return [[self documentsDirectory]stringByAppendingPathComponent:@"Checklists.plist"];
-}
-
--(void)saveChecklists{
-    NSMutableData *data = [[NSMutableData alloc]init];
-    NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc]initForWritingWithMutableData:data];
-    [archiver encodeObject:_lists forKey:@"Checklists"];
-    [archiver finishEncoding];
-    [data writeToFile:[self dataFilePath] atomically:YES];
-}
-
--(void)loadChecklists{
-    NSString *path = [self dataFilePath];
-    if([[NSFileManager defaultManager]fileExistsAtPath:path]){
-        NSData *data = [[NSData alloc]initWithContentsOfFile:path];
-        NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc]initForReadingWithData:data];
-        _lists = [unarchiver decodeObjectForKey:@"Checklists"];
-        [unarchiver finishDecoding];
-    }else{
-        _lists = [[NSMutableArray alloc]initWithCapacity:20];
-    }
-}
-
-- (id)initWithCoder:(NSCoder *)aDecoder{
-    if ((self = [super initWithCoder:aDecoder])) {
+//-(NSString*)documentsDirectory{
+//    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+//    NSString *documentsDirectory = [paths firstObject];
+//    return documentsDirectory;
+//}
+//
+//-(NSString*)dataFilePath{
+//    return [[self documentsDirectory]stringByAppendingPathComponent:@"Checklists.plist"];
+//}
+//
+//-(void)saveChecklists{
+//    NSMutableData *data = [[NSMutableData alloc]init];
+//    NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc]initForWritingWithMutableData:data];
+//    [archiver encodeObject:_lists forKey:@"Checklists"];
+//    [archiver finishEncoding];
+//    [data writeToFile:[self dataFilePath] atomically:YES];
+//}
+//
+//-(void)loadChecklists{
+//    NSString *path = [self dataFilePath];
+//    if([[NSFileManager defaultManager]fileExistsAtPath:path]){
+//        NSData *data = [[NSData alloc]initWithContentsOfFile:path];
+//        NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc]initForReadingWithData:data];
+//        _lists = [unarchiver decodeObjectForKey:@"Checklists"];
+//        [unarchiver finishDecoding];
+//    }else{
 //        _lists = [[NSMutableArray alloc]initWithCapacity:20];
-//        Checklist *list;
-//        list = [[Checklist alloc]init];
-//        list.name = @"娱乐";
-//        [_lists addObject:list];
-//        
-//        list = [[Checklist alloc]init];
-//        list.name = @"工作";
-//        [_lists addObject:list];
-//        
-//        list = [[Checklist alloc]init];
-//        list.name = @"学习";
-//        [_lists addObject:list];
-//        
-//        list = [[Checklist alloc]init];
-//        list.name = @"家庭";
-//        [_lists addObject:list];
-//        
-//        for (Checklist *list in _lists) {
-//            ChecklistItem *item = [[ChecklistItem alloc]init];
-//            item.text = [NSString stringWithFormat:@"Item for:%@",list.name];
-//        }
-        [self loadChecklists];
-    }
-    return self;
-}
+//    }
+//}
+
+//- (id)initWithCoder:(NSCoder *)aDecoder{
+//    if ((self = [super initWithCoder:aDecoder])) {
+////        _lists = [[NSMutableArray alloc]initWithCapacity:20];
+////        Checklist *list;
+////        list = [[Checklist alloc]init];
+////        list.name = @"娱乐";
+////        [_lists addObject:list];
+////        
+////        list = [[Checklist alloc]init];
+////        list.name = @"工作";
+////        [_lists addObject:list];
+////        
+////        list = [[Checklist alloc]init];
+////        list.name = @"学习";
+////        [_lists addObject:list];
+////        
+////        list = [[Checklist alloc]init];
+////        list.name = @"家庭";
+////        [_lists addObject:list];
+////        
+////        for (Checklist *list in _lists) {
+////            ChecklistItem *item = [[ChecklistItem alloc]init];
+////            item.text = [NSString stringWithFormat:@"Item for:%@",list.name];
+////        }
+//        [self loadChecklists];
+//    }
+//    return self;
+//}
 
 - (void)viewDidLoad
 {
@@ -97,8 +96,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-
-   return [_lists count];
+   return [self.dataModel.lists count];
 }
 
 
@@ -110,14 +108,14 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
-    Checklist *checklist = _lists[indexPath.row];
+    Checklist *checklist = self.dataModel.lists[indexPath.row];
     cell.textLabel.text = checklist.name;
     cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    Checklist *checklist = _lists[indexPath.row];
+    Checklist *checklist = self.dataModel.lists[indexPath.row];
     [self performSegueWithIdentifier:@"ShowChecklist" sender:checklist];
 }
 
@@ -139,8 +137,8 @@
 
 //delegate方法，Add进入，Done按钮触发
 -(void)listDetailViewController:(ListDetailViewController *)controller didFinishAddingChecklist:(Checklist*)checklist{
-    NSInteger newRowIndex = [_lists count];
-    [_lists addObject:checklist];
+    NSInteger newRowIndex = [self.dataModel.lists count];
+    [self.dataModel.lists addObject:checklist];
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:newRowIndex inSection:0];
     NSArray *indexPaths = @[indexPath];
     [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
@@ -151,7 +149,7 @@
 
 //delegate方法，Edit进入，Done按钮触发
 -(void)listDetailViewController:(ListDetailViewController *)controller didFinishEditingChecklist:(Checklist*)checklist{
-    NSInteger index = [_lists indexOfObject:checklist];
+    NSInteger index = [self.dataModel.lists indexOfObject:checklist];
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
     cell.textLabel.text = checklist.name;
@@ -162,7 +160,7 @@
 }
 
 -(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
-    [_lists removeObjectAtIndex:indexPath.row];
+    [self.dataModel.lists removeObjectAtIndex:indexPath.row];
     NSArray *indexPaths = @[indexPath];
     [tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
 }
@@ -171,24 +169,13 @@
     UINavigationController *navigationController = [self.storyboard instantiateViewControllerWithIdentifier:@"ListNavigationController"];
     ListDetailViewController *controller = (ListDetailViewController *)navigationController.topViewController;
     controller.delegate = self;
-    Checklist *checklist = _lists[indexPath.row];
+    Checklist *checklist = self.dataModel.lists[indexPath.row];
     controller.checklistToEdit = checklist;
     
     [self presentViewController:navigationController animated:YES completion:nil];
 }
 
-                                                    
-                                                    
-                                                    
-                                                    
-                                                    
-                                                    
-                                                    
-                                                    
-                                                    
-                                                    
-                                                    
-                                                    
+
                                                     
                                                     
 @end
